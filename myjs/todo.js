@@ -11,6 +11,7 @@ jQuery(function ($) {
 	}
 	var ToDo = {
 		init: function () {
+			this.import();
 			$('.toggle-all').change(this.toggleAll);
 			$('.toggle').change(this.toggle);
 			$('.filters a').click(this.filterSet);
@@ -31,14 +32,30 @@ jQuery(function ($) {
 			} else {
 				$('.clear-completed').fadeOut(0);
 			}
+			ToDo.export();
 			ToDo.filters();
+		},
+		export: function () {
+			var data = {};
+			$.each($('.todo-list li'), function (i, val) {
+				data[$(val).find('.edit').val()] = $(val)[0].className;
+			})
+			localStorage.setItem('todo-list', JSON.stringify(data));
+		},
+		import: function () {
+			var data = JSON.parse(localStorage.getItem('todo-list'));
+			if (data) {
+				$('.todo-list li').remove()
+				$.each(data, function (value, Class) {
+					ToDo.addToggle([value, Class]);
+				})
+			}
 		},
 		edit: function () {
 			$(this).addClass('editing');
 			$(this).find('.edit').focus();
 		},
 		editKey: function (e) {
-			console.log(0);
 			if ((e.which == ENTER) || (e.which == ESCAPE)) {
 				if ($(this).val().trim().length == 0) {
 					$(this).parent().remove();
@@ -53,19 +70,24 @@ jQuery(function ($) {
 			$(this).parent().removeClass('editing');
 			ToDo.update();
 		},
-		create: function (e) {
-			if ((e.which == ENTER) && ($(this).val().trim().length > 0)) {
-				$('.todo-list').append(`
-										<li>
+		addToggle: function (value) {
+			var checked = (value[1] == 'completed') ? "checked" : "";
+			$('.todo-list').append(`
+										<li class="`+ value[1]+`">
 											<div class="view">
-												<input class="toggle" type="checkbox">
-												<label>` + escapeHtml($(this).val().trim()) + `</label>
+												<input class="toggle" type="checkbox" ` + checked + `>
+												<label>` + escapeHtml(value[0]) + `</label>
 												<button class="destroy"></button>
 											</div>
-											<input class="edit" value="` + escapeHtml($(this).val().trim()) + `">
+											<input class="edit" value="` + escapeHtml(value[0]) + `">
 										</li>
 								`);
+		},
+		create: function (e) {
+			if ((e.which == ENTER) && ($(this).val().trim().length > 0)) {
+				ToDo.addToggle([$(this).val().trim(), ""]);
 				$(this).val("");
+				ToDo.export();
 				ToDo.init();
 			}
 		},
