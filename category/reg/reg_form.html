@@ -1,4 +1,7 @@
 <style>
+	.registration{
+		font-size: 24px;
+	}
 	table tr td{
 		padding: 10px 0;
 	}
@@ -8,24 +11,24 @@
 	<a href="?action=auth" class="ui-button ui-widget ui-corner-all">Вход</a>
 </div>
 <section class="registration" align="center">
-	<header class="header">
+	<header class="todoapp header">
 		<h1>Регистрация</h1>
 	</header>
-	<form>
+	<form method="post" action="/?action=reg">
 		<table align="center">
 			<tr>
 				<td>
-					<input name="login" type="text" placeholder="Логин" class="ui-widget ui-corner-all"/>
+					<input name="login" type="text" placeholder="Логин" class="edit"/>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input name="password" type="password" placeholder="Пароль" class="ui-widget ui-corner-all"/>
+					<input name="password" type="password" placeholder="Пароль" class="edit"/>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input name="password" type="password" placeholder="Повторите пароль" class="ui-widget ui-corner-all"/>
+					<input name="password" type="password" placeholder="Повторите пароль" class="edit"/>
 				</td>
 			</tr>
 			<tr>
