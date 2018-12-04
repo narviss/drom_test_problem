@@ -14,20 +14,24 @@
 	<header class="todoapp header">
 		<h1>Вход</h1>
 	</header>
-	<form>
+	<form method="post" action="/?action=auth">
+		<? if($errorMessage): ?>
+			<p style="color:red"><?=$errorMessage?></p>
+		<? endif; ?>
 		<table align="center">
 			<tr>
 				<td>
-					<input name="login" type="text" placeholder="Логин" class="edit"/>
+					<input name="login" type="text" placeholder="Логин" class="edit" required/>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input name="password" type="password" placeholder="Пароль" class="edit"/>
+					<input name="password" type="password" placeholder="Пароль" class="edit" required/>
 				</td>
 			</tr>
 			<tr>
 				<td>
+					<input hidden="hidden" name="send_auth_form"/>
 					<button type="submit" class="ui-button ui-widget ui-corner-all">Вход</button>
 				</td>
 			</tr>

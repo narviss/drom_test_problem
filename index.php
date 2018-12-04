@@ -1,8 +1,14 @@
 <?php
+session_start();
+header('Content-Type: text/html; charset=UTF8');
+Error_Reporting(E_ALL & ~E_NOTICE);
 
-header('Content-Type: text/html; charset=utf-8');
+$user = isset($_SESSION['user']) ? $_SESSION['user'] : false;
+
+require('config/config.php');
+require('config/database.php');
 require('route.php');
-include('category/main/head.html');
-new Router();
-include('category/main/footer.html');
+
+new Router($user);
+
 ?>

@@ -15,24 +15,28 @@
 		<h1>Регистрация</h1>
 	</header>
 	<form method="post" action="/?action=reg">
+		<? if($errorMessage): ?>
+			<p style="color:red"><?=$errorMessage?></p>
+		<? endif; ?>
 		<table align="center">
 			<tr>
 				<td>
-					<input name="login" type="text" placeholder="Логин" class="edit"/>
+					<input name="login" type="text" placeholder="Логин" class="edit" required/>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input name="password" type="password" placeholder="Пароль" class="edit"/>
+					<input name="password" type="password" placeholder="Пароль" class="edit" required/>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input name="password" type="password" placeholder="Повторите пароль" class="edit"/>
+					<input name="re_password" type="password" placeholder="Повторите пароль" class="edit" required/>
 				</td>
 			</tr>
 			<tr>
 				<td>
+					<input hidden="hidden" name="send_reg_form"/>
 					<button type="submit" class="ui-button ui-widget ui-corner-all">Регистрация</button>
 				</td>
 			</tr>
