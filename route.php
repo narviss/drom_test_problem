@@ -40,7 +40,11 @@ class Router {
                 include("category/pm/todo.php");
                 $todo = new Todo($user);
                 $errorMessage = "";
-                if(isset($_POST['send_save_form']) && $todo->save($errorMessage)){
+                if(isset($_POST['send_save_form'])){
+                    if($_POST['id'])
+                        $todo->update($_POST['id'], $errorMessage);
+                    else
+                        $todo->save($errorMessage);
                     $todo->saveSuccess();
                 } else {
                     $todo->saveForm($errorMessage);

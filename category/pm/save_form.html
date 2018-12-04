@@ -26,6 +26,9 @@
 			</tr>
 			<tr>
 				<td>
+					<?if(isset($_GET['id'])): ?>
+						<input hidden="hidden" name="id" value="<?=$_GET['id']?>" />
+					<?endif;?>
 					<input hidden="hidden" name="todo_list" value="" />
 					<input hidden="hidden" name="send_save_form" />
 					<button type="submit" class="ui-button ui-widget ui-corner-all">Сохранить</button>

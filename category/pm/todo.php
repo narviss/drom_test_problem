@@ -4,6 +4,17 @@ class Todo {
     public function __construct($user){
         $this->user = $user;
     }
+    public function update($id, $errorMessage){
+        $todoList = $_POST['todo_list'];
+        $title = $_POST['title'];
+        $db = DataBase::getDB();
+
+        $sql = 'UPDATE `todo_list`
+						SET title = {?},
+                            context = {?}
+                        WHERE user_id = {?} AND id = {?}';
+        return $db->query($sql, array($title, $todoList, $this->user, $id));
+    }
     public function save($errorMessage){
         $todoList = $_POST['todo_list'];
         $title = $_POST['title'];
@@ -25,6 +36,8 @@ class Todo {
     public function getList($list){
         if($list == 'all'){
             $this->getAllList();
+        } elseif($list == 'new'){
+            $this->newList();
         } else {
             $this->getOneList($list);
         }
@@ -39,6 +52,10 @@ class Todo {
         } else {
 
         }
+    }
+    private function newList(){
+        $todoList = "";
+        include("category/pm/todo.html");
     }
     private function getOneList($list){
         $sql = 'SELECT *
