@@ -24,6 +24,8 @@ jQuery(function ($) {
 
 		},
 		getContent: function (e) {
+			if($(this).parent().parent()[0].className == 'filters')
+				return false;
 			e.preventDefault();
 			$('body').animate({ opacity: 0 }, 0);
 			$.ajax({
