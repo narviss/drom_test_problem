@@ -1,5 +1,3 @@
-{{@param $todoList array}}
-
 <script>
 	<?if(isset($todoList['context'])): ?>
         localStorage.setItem('todo-list', JSON.stringify(<?=$todoList['context']?>));

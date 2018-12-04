@@ -1,30 +1,12 @@
 <?php
-
 class Auth {
-
-    /**
-     * При успешной Аутентификации
-     */
+    public function authForm($errorMessage){
+        include("category/auth/auth_form.html");
+    }
     public function authSuccess(){
         include("category/pm/index.html");
         include("category/auth/success.html");
     }
-
-    /**
-     * Форма аутентификации
-     *
-     * @param $errorMessage
-     */
-    public function authForm($errorMessage){
-        include("category/auth/auth_form.html");
-    }
-
-    /**
-     * Проверка данных на правильность ввода(сама Аутентификация)
-     *
-     * @param $errorMessage
-     * @return bool
-     */
     public function authCheck(&$errorMessage){
         if(!isset($_POST['login']) || !isset($_POST['password'])){
             $errorMessage = "Не все поля заполнены!";

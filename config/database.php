@@ -4,7 +4,13 @@ class DataBase {
 
     private static $db = null;
     private $mysqli;
-    private $sym_query = "{?}"; // специальный символ для запросов
+    private $sym_query = "{?}";
+
+    public static function getDB() {
+        if (self::$db == null)
+            self::$db = new DataBase();
+        return self::$db;
+    }
 
     private function __construct() {
         $this->mysqli = new mysqli(DBSERVER, DBUSER, DBPASSWORD, DATABASE) or die(ERROR_CONNECT);
@@ -14,24 +20,6 @@ class DataBase {
         $this->mysqli->query("set collation_connection='utf8_general_ci'");
     }
 
-    /**
-     * Проверяет нет ли подключения к БД, если нет, то создаёт
-     *
-     * @return DataBase|null
-     */
-    public static function getDB() {
-        if (self::$db == null)
-            self::$db = new DataBase();
-        return self::$db;
-    }
-
-    /**
-     * Создаёт запрос с заменой спец. символа
-     *
-     * @param $query
-     * @param $params
-     * @return mixed
-     */
     private function getQuery($query, $params) {
         if ($params) {
             for ($i = 0; $i < count($params); $i++) {
@@ -43,39 +31,21 @@ class DataBase {
         return $query;
     }
 
-    /**
-     * SELECT-метод, возвращающий таблицу результатов
-     *
-     * @param $query
-     * @param bool $params
-     * @return array|bool
-     */
+    /* SELECT-метод, возвращающий таблицу результатов */
     public function select($query, $params = false) {
         $result_set = $this->mysqli->query($this->getQuery($query, $params));
         if (!$result_set) return false;
         return $this->resultSetToArray($result_set);
     }
 
-    /**
-     * SELECT-метод, возвращающий одну строку с результатом
-     *
-     * @param $query
-     * @param bool $params
-     * @return array|bool|null
-     */
+    /* SELECT-метод, возвращающий одну строку с результатом */
     public function selectRow($query, $params = false) {
         $result_set = $this->mysqli->query($this->getQuery($query, $params));
         if ($result_set->num_rows != 1) return false;
         else return $result_set->fetch_assoc();
     }
 
-    /**
-     * SELECT-метод, возвращающий значение из конкретной ячейки
-     *
-     * @param $query
-     * @param bool $params
-     * @return 0|bool
-     */
+    /* SELECT-метод, возвращающий значение из конкретной ячейки */
     public function selectCell($query, $params = false) {
         $result_set = $this->mysqli->query($this->getQuery($query, $params));
         if ((!$result_set) || ($result_set->num_rows != 1)) return false;
@@ -85,13 +55,7 @@ class DataBase {
         }
     }
 
-    /**
-     * НЕ-SELECT методы (INSERT, UPDATE, DELETE). Если запрос INSERT, то возвращается id последней вставленной записи
-     *
-     * @param $query
-     * @param bool $params
-     * @return bool|mixed
-     */
+    /* НЕ-SELECT методы (INSERT, UPDATE, DELETE). Если запрос INSERT, то возвращается id последней вставленной записи */
     public function query($query, $params = false) {
         $success = $this->mysqli->query($this->getQuery($query, $params));
         if ($success) {
@@ -101,12 +65,7 @@ class DataBase {
         else return false;
     }
 
-    /**
-     * Преобразование result_set в двумерный массив
-     *
-     * @param $result_set
-     * @return array
-     */
+    /* Преобразование result_set в двумерный массив */
     private function resultSetToArray($result_set) {
         $array = array();
         while (($row = $result_set->fetch_assoc()) != false) {
@@ -115,6 +74,7 @@ class DataBase {
         return $array;
     }
 
+    /* При уничтожении объекта закрывается соединение с базой данных */
     public function __destruct() {
         if ($this->mysqli) $this->mysqli->close();
     }
