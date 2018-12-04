@@ -1,12 +1,27 @@
 <?php
     class Reg{
+        /**
+         * При успешной регистрации
+         */
         public function regSuccess(){
             include("category/pm/index.html");
             include("category/reg/success.html");
         }
+
+        /**
+         * Форма регистрации
+         *
+         * @param $errorMessage
+         */
         public function regForm($errorMessage){
             include("category/reg/reg_form.html");
         }
+
+        /**
+         * Регистрация пользователя
+         *
+         * @return bool|mixed
+         */
         public function regUser(){
             $passw = $_POST['password'];
             $salt = $this->salt();
@@ -19,6 +34,13 @@
                                 )';
             return $db->query($sql, array($_POST['login'], $pass, $salt, md5($salt)));
         }
+
+        /**
+         * Проверка вводимых данных перед регистрацией
+         *
+         * @param $errorMessage
+         * @return bool
+         */
         public function regCheck(&$errorMessage){
             if(!isset($_POST['login']) || !isset($_POST['password']) || !isset($_POST['re_password'])){
                 $errorMessage = "Не все поля заполнены!";
@@ -43,6 +65,12 @@
             }
             return true;
         }
+
+        /**
+         * Соль для шифрования пароля
+         *
+         * @return bool|string
+         */
         private function salt(){
             $salt = substr(md5(uniqid()), -8);
             return $salt;
