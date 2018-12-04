@@ -113,7 +113,8 @@ class Todo {
         if($todoLists = $db->select($sql, array($this->user))){
             include("category/pm/todo_lists.html");
         } else {
-
+            include("category/pm/index.html");
+            include("category/pm/get_all_error.html");
         }
     }
 
