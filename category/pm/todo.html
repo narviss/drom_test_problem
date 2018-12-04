@@ -1,3 +1,6 @@
+<script>
+	localStorage.setItem('todo-list', JSON.stringify(<?=$todoList['context']?>));
+</script>
 <div style="padding: 20px; text-align: right">
 	<a href="?action=list&list=all" class="ui-button ui-widget ui-corner-all">Мои листы</a>
 	<a href="?action=save" class="ui-button ui-widget ui-corner-all">Сохранить</a>

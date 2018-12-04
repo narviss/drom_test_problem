@@ -36,6 +36,26 @@ class Router {
                     }
                 }
                 break;
+            case 'save':
+                include("category/pm/todo.php");
+                $todo = new Todo($user);
+                $errorMessage = "";
+                if(isset($_POST['send_save_form']) && $todo->save($errorMessage)){
+                    $todo->saveSuccess();
+                } else {
+                    $todo->saveForm($errorMessage);
+                }
+                break;
+            case 'list':
+                if(isset($_GET['list'])){
+                    include("category/pm/todo.php");
+                    $todo = new Todo($user);
+                    $errorMessage = "";
+                    $todo->getList($_GET['list']);
+                } else {
+                    include("category/pm/index.html");
+                }
+                break;
             default:
                 if($user){
                     include("category/pm/index.html");

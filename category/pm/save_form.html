@@ -1,0 +1,39 @@
+<style>
+	.save {
+		font-size: 24px;
+	}
+	table tr td {
+		padding: 10px 0;
+	}
+</style>
+<div style="padding: 20px; text-align: right">
+	<a href="/" class="ui-button ui-widget ui-corner-all">Главная</a>
+	<a href="?action=exit" class="ui-button ui-widget ui-corner-all">Выход</a>
+</div>
+<section class="save" align="center">
+	<header class="todoapp header">
+		<h1>Сохранение</h1>
+	</header>
+	<form method="post" action="/?action=save">
+		<? if($errorMessage): ?>
+			<p style="color:red"><?=$errorMessage?></p>
+		<? endif; ?>
+		<table align="center">
+			<tr>
+				<td>
+					<input name="title" type="text" placeholder="Название списка" class="edit" required />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input hidden="hidden" name="todo_list" value="" />
+					<input hidden="hidden" name="send_save_form" />
+					<button type="submit" class="ui-button ui-widget ui-corner-all">Сохранить</button>
+				</td>
+			</tr>
+		</table>
+	</form>
+	<script>
+		$('input[name=todo_list]').val(window.localStorage['todo-list'])
+	</script>
+</section>
