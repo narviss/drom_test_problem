@@ -6,6 +6,7 @@ class Router {
         switch ($_GET['action']){
             case 'exit':
                 session_destroy();
+                include("category/main/clear.html");
                 include("category/main/index.html");
                 break;
             case 'auth':
@@ -48,6 +49,16 @@ class Router {
                     $todo->saveSuccess();
                 } else {
                     $todo->saveForm($errorMessage);
+                }
+                break;
+            case 'del':
+                include("category/pm/todo.php");
+                $todo = new Todo($user);
+                $errorMessage = "";
+                if(isset($_GET['id']) && $todo->del($_GET['id'], $errorMessage)){
+                    $todo->delSuccess();
+                } else {
+                    include("category/pm/index.html");
                 }
                 break;
             case 'list':

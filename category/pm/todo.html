@@ -1,12 +1,20 @@
 <script>
-	localStorage.setItem('todo-list', JSON.stringify(<?=$todoList['context']?>));
+	<?if(isset($todoList['context'])): ?>
+        localStorage.setItem('todo-list', JSON.stringify(<?=$todoList['context']?>));
+	<? else: ?>
+	    localStorage.clear();
+	<? endif; ?>
 </script>
 <div style="padding: 20px; text-align: right">
 	<a href="?action=list&list=new" class="ui-button ui-widget ui-corner-all">Новый список</a>
 	<a href="?action=list&list=all" class="ui-button ui-widget ui-corner-all">Мои листы</a>
+	<?if(isset($todoList['id'])):?>
+			<a href="?action=del&id=<?=$todoList['id'];?>" class="ui-button ui-widget ui-corner-all">Удалить</a>
+	<?endif;?>
 	<a href="?action=save<?if(isset($todoList['id'])) echo '&id='.$todoList['id'];?>" class="ui-button ui-widget ui-corner-all">Сохранить</a>
 	<a href="?action=exit" class="ui-button ui-widget ui-corner-all">Выход</a>
 </div>
+
 <section class="todoapp">
 	<header class="header">
 		<h1>todos</h1>

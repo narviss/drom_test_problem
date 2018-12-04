@@ -4,6 +4,14 @@ class Todo {
     public function __construct($user){
         $this->user = $user;
     }
+    public function del($id, $errorMessage){
+        $todoList = $_POST['todo_list'];
+        $title = $_POST['title'];
+        $db = DataBase::getDB();
+        $sql = 'DELETE FROM `todo_list`
+                        WHERE user_id = {?} AND id = {?}';
+        return $db->query($sql, array($this->user, $id));
+    }
     public function update($id, $errorMessage){
         $todoList = $_POST['todo_list'];
         $title = $_POST['title'];
@@ -28,6 +36,10 @@ class Todo {
     }
     public function saveForm($errorMessage){
         include("category/pm/save_form.html");
+    }
+    public function delSuccess(){
+        include("category/pm/index.html");
+        $this->newList();
     }
     public function saveSuccess(){
         include("category/pm/index.html");
@@ -64,6 +76,7 @@ class Todo {
         $db = DataBase::getDB();
         if($row = $db->select($sql, array($this->user, $list))){
             $todoList = $row[0];
+            print_r($todoList);
             include("category/pm/todo.html");
         } else {
 
