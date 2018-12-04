@@ -1,9 +1,4 @@
 <?php
-/**
- * Конфигурационный файл
- * Site: http://bezramok-tlt.ru
- * Регистрация пользователя письмом
- */
 
 //Адрес базы данных
 define('DBSERVER','localhost');

@@ -4,12 +4,12 @@ class Router {
     public function __construct($user){
         include('category/main/head.html');
         switch ($_GET['action']){
-            case 'exit':
+            case 'exit': // Выход
                 session_destroy();
                 include("category/main/clear.html");
                 include("category/main/index.html");
                 break;
-            case 'auth':
+            case 'auth': // Авторизация
                 if($user){
                     include("category/pm/index.html");
                 } else {
@@ -23,7 +23,7 @@ class Router {
                     }
                 }
                 break;
-            case 'reg':
+            case 'reg': // Регистрация
                 if($user){
                     include("category/pm/index.html");
                 } else {
@@ -37,7 +37,7 @@ class Router {
                     }
                 }
                 break;
-            case 'save':
+            case 'save': // Сохранение
                 include("category/pm/todo.php");
                 $todo = new Todo($user);
                 $errorMessage = "";
@@ -51,7 +51,7 @@ class Router {
                     $todo->saveForm($errorMessage);
                 }
                 break;
-            case 'del':
+            case 'del': // Удаление
                 include("category/pm/todo.php");
                 $todo = new Todo($user);
                 $errorMessage = "";
@@ -61,7 +61,7 @@ class Router {
                     include("category/pm/index.html");
                 }
                 break;
-            case 'list':
+            case 'list': // Просмотр сохраненных листов
                 if(isset($_GET['list'])){
                     include("category/pm/todo.php");
                     $todo = new Todo($user);

@@ -1,9 +1,19 @@
 <?php
+
 class Todo {
-    private $user = null;
+    private $user = null; // Id зарегестрированного пользователя
+
     public function __construct($user){
         $this->user = $user;
     }
+
+    /**
+     * Удаление списка
+     *
+     * @param $id
+     * @param $errorMessage
+     * @return bool|mixed
+     */
     public function del($id, $errorMessage){
         $todoList = $_POST['todo_list'];
         $title = $_POST['title'];
@@ -12,6 +22,14 @@ class Todo {
                         WHERE user_id = {?} AND id = {?}';
         return $db->query($sql, array($this->user, $id));
     }
+
+    /**
+     * Обновление списка
+     *
+     * @param $id
+     * @param $errorMessage
+     * @return bool|mixed
+     */
     public function update($id, $errorMessage){
         $todoList = $_POST['todo_list'];
         $title = $_POST['title'];
@@ -23,6 +41,13 @@ class Todo {
                         WHERE user_id = {?} AND id = {?}';
         return $db->query($sql, array($title, $todoList, $this->user, $id));
     }
+
+    /**
+     * Сохранение списка
+     *
+     * @param $errorMessage
+     * @return bool|mixed
+     */
     public function save($errorMessage){
         $todoList = $_POST['todo_list'];
         $title = $_POST['title'];
@@ -34,17 +59,39 @@ class Todo {
                                 )';
         return $db->query($sql, array($this->user, $title, $todoList, 0));
     }
+
+    /**
+     * Форма сохранения
+     *
+     * @param $errorMessage
+     */
     public function saveForm($errorMessage){
         include("category/pm/save_form.html");
     }
+
+
+    /**
+     * При успешном удалении
+     *
+     */
     public function delSuccess(){
         include("category/pm/index.html");
         $this->newList();
     }
+
+    /**
+     * При успешном сохранении
+     */
     public function saveSuccess(){
         include("category/pm/index.html");
         include("category/pm/save_success.html");
     }
+
+    /**
+     * Получения списка, либо отдельного листа, либо всех
+     *
+     * @param $list
+     */
     public function getList($list){
         if($list == 'all'){
             $this->getAllList();
@@ -54,6 +101,10 @@ class Todo {
             $this->getOneList($list);
         }
     }
+
+    /**
+     *  Получение списка листов, которые есть у этого пользователя
+     */
     private function getAllList(){
         $sql = 'SELECT *
 					FROM `todo_list`
@@ -65,10 +116,19 @@ class Todo {
 
         }
     }
+
+    /**
+     * Создание нового листа
+     */
     private function newList(){
-        $todoList = "";
         include("category/pm/todo.html");
     }
+
+    /**
+     * Получение определенного листа
+     *
+     * @param $list
+     */
     private function getOneList($list){
         $sql = 'SELECT *
 					FROM `todo_list`
@@ -76,10 +136,9 @@ class Todo {
         $db = DataBase::getDB();
         if($row = $db->select($sql, array($this->user, $list))){
             $todoList = $row[0];
-            print_r($todoList);
             include("category/pm/todo.html");
         } else {
-
+            return false;
         }
     }
 }
